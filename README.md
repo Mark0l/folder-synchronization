@@ -1,1 +1,1 @@
-# folder_synchronization
+# folder-synchronization
