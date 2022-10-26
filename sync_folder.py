@@ -1,4 +1,5 @@
 import argparse
+import filecmp
 
 # Setting-up cmd line interaction
 parser = argparse.ArgumentParser(description='Set up one-way folder synchronization and create operations log.')
@@ -19,3 +20,12 @@ folder_replica = args.folder_replica
 sync_interval = args.sync_interval
 log_file = args.log_file
 
+# Compare Source and Replica folders
+diff_result = filecmp.dircmp(folder_source, folder_replica, ignore=None, hide=None)
+diff_result.report
+
+to_copy = list(diff_result.diff_files + diff_result.left_only)
+to_remove = diff_result.right_only
+
+print(f'Files to copy: {to_copy}')
+print(f'Files to remove: {to_remove}')
