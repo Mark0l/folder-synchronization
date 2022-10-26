@@ -54,6 +54,11 @@ if len(to_copy) != 0 or len(to_remove) != 0:
     for file in to_remove:
         os.remove(os.path.join(folder_replica, file))
 
+# Log to cmd line
 time_now = datetime.utcnow()
 change_report = f'{time_now} UTC\n------------------------------\n{to_copy} copied\n{to_remove} removed'
 print(change_report)
+
+# Log to specified file
+with open(log_file, 'a') as log:
+    log.write(change_report)
