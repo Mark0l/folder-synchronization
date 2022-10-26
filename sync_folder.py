@@ -13,3 +13,9 @@ parser.add_argument('log_file', metavar='log', type=str, nargs=1,
 
 args = parser.parse_args()
 
+
+folder_source = args.folder_source
+folder_replica = args.folder_replica
+sync_interval = args.sync_interval
+log_file = args.log_file
+
