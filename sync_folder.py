@@ -1,5 +1,29 @@
 import argparse
 import filecmp
+import os
+import shutil
+from datetime import datetime
+
+
+def compare_folders(folder1, folder2, pout=False):
+    """
+    Compare folder contents for src and dst
+
+    :param folder1: first folder path
+    :param folder2: second folder path
+    :param pout: option to print items to copy/remove, default is False
+    :return:
+    """
+    diff_result = filecmp.dircmp(folder1, folder2, ignore=None, hide=None)
+    diff_result.report
+    files_to_copy = list(diff_result.diff_files + diff_result.left_only)
+    files_to_remove = diff_result.right_only
+    if pout:
+        print(f'Files to copy: {files_to_copy}')
+        print(f'Files to remove: {files_to_remove}')
+
+    return files_to_copy, files_to_remove
+
 
 # Setting-up cmd line interaction
 parser = argparse.ArgumentParser(description='Set up one-way folder synchronization and create operations log.')
@@ -14,18 +38,22 @@ parser.add_argument('log_file', metavar='log', type=str, nargs=1,
 
 args = parser.parse_args()
 
-
-folder_source = args.folder_source
-folder_replica = args.folder_replica
+folder_source = args.folder_source[0]
+folder_replica = args.folder_replica[0]
 sync_interval = args.sync_interval
-log_file = args.log_file
+log_file = args.log_file[0]
 
 # Compare Source and Replica folders
-diff_result = filecmp.dircmp(folder_source, folder_replica, ignore=None, hide=None)
-diff_result.report
+to_copy, to_remove = compare_folders(folder_source, folder_replica, False)
 
-to_copy = list(diff_result.diff_files + diff_result.left_only)
-to_remove = diff_result.right_only
+if len(to_copy) != 0 or len(to_remove) != 0:
+    # Sync folders
+    for file in to_copy:
+        shutil.copy2(os.path.join(folder_source, file), folder_replica)
 
-print(f'Files to copy: {to_copy}')
-print(f'Files to remove: {to_remove}')
+    for file in to_remove:
+        os.remove(os.path.join(folder_replica, file))
+
+time_now = datetime.utcnow()
+change_report = f'{time_now} UTC\n------------------------------\n{to_copy} copied\n{to_remove} removed'
+print(change_report)
