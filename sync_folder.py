@@ -59,7 +59,7 @@ while sync:
 
     # Log to cmd line
     time_now = datetime.utcnow()
-    change_report = f'{time_now} UTC\n------------------------------\n{to_copy} copied\n{to_remove} removed'
+    change_report = f'{time_now} UTC\n------------------------------\n{to_copy} copied\n{to_remove} removed\n'
     print(change_report)
 
     # Log to specified file
