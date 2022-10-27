@@ -6,6 +6,7 @@ Program aims to implement:
 1. periodical synchronization
 1. logging of operations to command line interface
 1. logging of operations to a log file
+1. setu up as a background process
 
 User has to provide source and replica folders. Log file is created when not present.
 
