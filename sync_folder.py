@@ -9,9 +9,9 @@ from datetime import datetime
 def compare_folders(folder1, folder2, pout=False):
     """
     Compare folder contents for src and dst
-    :param folder1: first folder path
-    :param folder2: second folder path
-    :param pout: option to print items to copy/remove, default is False
+    :param folder1: first folder path (str)
+    :param folder2: second folder path (str)
+    :param pout: option to print items to copy/remove, default is False (bool)
     :return:
     """
     diff_result = filecmp.dircmp(folder1, folder2, ignore=None, hide=None)
