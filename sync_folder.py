@@ -9,14 +9,13 @@ from datetime import datetime
 def compare_folders(folder1, folder2, pout=False):
     """
     Compare folder contents for src and dst
-
     :param folder1: first folder path
     :param folder2: second folder path
     :param pout: option to print items to copy/remove, default is False
     :return:
     """
     diff_result = filecmp.dircmp(folder1, folder2, ignore=None, hide=None)
-    diff_result.report
+    # diff_result.report
     files_to_copy = list(diff_result.diff_files + diff_result.left_only)
     files_to_remove = diff_result.right_only
     if pout:
@@ -45,6 +44,7 @@ sync_interval = args.sync_interval[0]
 log_file = args.log_file[0]
 sync = 1
 
+# Endless loop for timing implementation
 while sync:
     # Compare Source and Replica folders
     to_copy, to_remove = compare_folders(folder_source, folder_replica, False)
